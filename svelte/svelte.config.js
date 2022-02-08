@@ -13,6 +13,9 @@ export default {
 		adapter: adapter({
 			pages: '../dist/www',
 			assets: '../dist/www'
-		})
+		}),
+		files: {
+			lib: 'src/lib'
+		}
 	}
 };

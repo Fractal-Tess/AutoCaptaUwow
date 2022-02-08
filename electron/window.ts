@@ -2,8 +2,6 @@ import path from "path";
 import serve from "electron-serve";
 import { app, BrowserWindow } from "electron";
 
-app.name = "Fractal-Tess | SvelteKit, Electron, TypeScript";
-
 const prod = false;
 
 let window: BrowserWindow | null = null;
@@ -11,16 +9,16 @@ const loadURL = serve({ directory: "dist/www" });
 
 async function createWindow() {
   window = new BrowserWindow({
-    title: "Fractal-Tess- SvelteKit, Electron, TypeScript",
     icon: path.join(__dirname, "icon.ico"),
     frame: false,
     maximizable: false,
     fullscreen: false,
     fullscreenable: false,
     resizable: false,
+    transparent: true,
 
-    width: 720,
-    height: 480,
+    width: 1280,
+    height: 720,
     show: false,
     webPreferences: {
       /** Fast Develop */

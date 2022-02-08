@@ -6,6 +6,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+* {
 	font-family: 'Actor';
+}
+
+body {
+	background-color: transparent;
+	-webkit-app-region: drag;
 }
