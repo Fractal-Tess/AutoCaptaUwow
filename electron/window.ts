@@ -1,76 +1,56 @@
-import { app, BrowserWindow } from "electron";
 import path from "path";
-import DevConfig from "./devConfig";
+import serve from "electron-serve";
+import { app, BrowserWindow } from "electron";
 
-class Main {
-  window: BrowserWindow | null = null;
-  settings: { [key: string]: any };
-  devConfig: DevConfig;
-  appName: string;
+app.name = "Fractal-Tess | SvelteKit, Electron, TypeScript";
 
-  constructor(
-    settings: { [key: string]: any },
-    appName: string = "Fractal-Tess SKETT",
-    devConfig: DevConfig
-  ) {
-    this.settings = settings;
-    this.devConfig = devConfig;
-    this.appName = appName;
+let window: BrowserWindow | null = null;
+const loadURL = serve({ directory: "dist/www" });
 
-    app.on("ready", () => {
-      this.createWindow();
-    });
+async function createWindow() {
+  window = new BrowserWindow({
+    title: "Fractal-Tess- SvelteKit, Electron, TypeScript",
+    icon: path.join(__dirname, "icon.ico"),
+    frame: false,
+    maximizable: false,
+    fullscreen: false,
+    fullscreenable: false,
+    resizable: false,
 
-    app.on("window-all-closed", this.onWindowAllClosed);
+    width: 720,
+    height: 480,
+    show: false,
+    webPreferences: {
+      /** Fast Develop */
+      nodeIntegration: true,
+      contextIsolation: false,
+
+      /** Secure */
+      // nodeIntegration: false,
+      // contextIsolation: true,
+      // enableRemoteModule: true,
+      // preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  try {
+    console.log("Trying to load electron serve");
+    loadURL(window);
+  } catch (error) {
+    console.log("Error loading Electron serve");
+    console.log(error);
   }
 
-  async createWindow() {
-    app.name = this.appName;
-    let window = new BrowserWindow({
-      ...this.settings,
-      show: false,
-      webPreferences: {
-        /** Fast Develop */
-        nodeIntegration: true,
-        contextIsolation: false,
-
-        /** Secure */
-        // nodeIntegration: false,
-        // contextIsolation: true,
-        // enableRemoteModule: true,
-        // preload: path.join(__dirname, "preload.js"),
-      },
-    });
-
-    // Load html
-    if (this.devConfig.isLocalHost()) {
-      try {
-        console.log("Trying to load localhost");
-        await window.loadURL("http://localhost:3000/");
-      } catch (error) {
-        console.log("Error loading localhost");
-        console.log(error);
-      }
-    } else if (this.devConfig.isElectronServe()) {
-      try {
-        console.log("Trying to load electron serve");
-        await this.devConfig.loadURL(window);
-      } catch (error) {
-        console.log("Error loading Electron serve");
-        console.log(error);
-      }
-    }
-
-    window.once("ready-to-show", window.show);
-
-    return window;
-  }
-
-  onWindowAllClosed() {
-    if (process.platform !== "darwin") {
-      app.quit();
-    }
-  }
+  window.once("ready-to-show", window.show);
 }
 
-export default Main;
+app.on("ready", () => {
+  createWindow();
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    window = null;
+    app.quit();
+  }
+});
