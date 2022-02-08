@@ -2,8 +2,8 @@
   "name": "Fractal-Tess SKETT",
   "author": "Fractal-Tess",
   "license": "MIT",
-  "version": "0.0.4",
-  "main": "dist/index.js",
+  "version": "0.0.1",
+  "main": "dist/window.js",
   "scripts": {
     "nodemon": "nodemon",
     "start": "npm run compile && electron .",
@@ -21,7 +21,6 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "electron-reload": "^1.5.0",
     "electron-serve": "^1.1.0",
     "electron-updater": "^4.3.9"
   },
@@ -48,7 +47,7 @@
       "uninstallerIcon": "icon.ico",
       "uninstallDisplayName": "Fractal-Tess SKETT",
       "license": "LICENSE",
-      "oneClick": false,
+      "oneClick": true,
       "allowToChangeInstallationDirectory": true
     }
   }
