@@ -21,17 +21,22 @@ async function createWindow() {
     height: 720,
     show: false,
     webPreferences: {
+      devTools: true,
+
       /** Fast Develop */
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
 
       /** Secure */
       // nodeIntegration: false,
       // contextIsolation: true,
-      // enableRemoteModule: true,
-      // preload: path.join(__dirname, "preload.js"),
+      enableRemoteModule: true,
+
+      preload: path.join(__dirname, "preload.js"),
     },
   });
+
+  window.webContents.openDevTools();
 
   if (!prod) {
     try {
